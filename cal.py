@@ -3,6 +3,8 @@
 # claim functions
 
 import stdio
+import sys
+import calmod.py
 
 # function to determine leap year 
 def is_leap(year):
