@@ -1,6 +1,4 @@
-# file for all functions used
-# import all functions to cal.py
-
+import sys
 import stdio
 
 # function to determine leap year 
@@ -11,58 +9,44 @@ def is_leap(year):
 
 # function that gets the number of days in a month
 def get_month_days(month, year):
-    # list of months that have 31 days
     if month in [1, 3, 5, 7, 8, 10, 12]:
         return 31
-    # list of months that have 30 days
     elif month in [4, 6, 9, 11]:
         return 30
     elif month == 2:
-        # returns 29 if leap year, else returns 28
         return 29 if is_leap(year) else 28
 
-
-# gets the start date of the month
+# gets the start date of the month using Zeller's Congruence
 def get_start_day(month, year):
-    # if month is jan or feb, subtract 1 from year
     if month < 3:
         month += 12
         year -= 1
-    # 
-    a = 1
-    # sets b to the remainder of year divided by 100
-    b = year % 100
-    # sets c to the year divided by 100
-    c = year // 100
-    # formula to get the start day
-    d = a + ((13 * (month + 1)) // 5) + b + (b // 4) + (c // 4) - (2 * c)
-    # returns the start day
-    return d % 7
+        
+    q = 1  # First day of the month
+    m = month
+    K = year % 100
+    J = year // 100
+    f = q + ((13 * (m + 1)) // 5) + K + (K // 4) + (J // 4) + 5 * J
+    h = f % 7
+    
+    # Convert result to make Monday = 0, Tuesday = 1, ... Sunday = 6
+    return (h - 2) % 7
 
 # function to print the calendar
 def print_calendar(month, year):
-    # list of days
-    days = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"]
-    # sets the var to the function call of gwt_month_days
+    days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     month_days = get_month_days(month, year)
-    # sets the var to the function call of get_start_day
     start_day = get_start_day(month, year)
-    
-    # prints the days of the week
-    stdio.write("Mo Tu We Th Fr Sa Su")
-    for i in range((start_day + 1) % 7):
-        stdio.write("   ", end="")
 
-    # prints the nums correlated with the days
+    stdio.write(" ".join(days) + '\n')
+    for i in range(start_day):
+        stdio.write('   ')
+
     for day in range(1, month_days + 1):
-        stdio.write(f"{day:2} ", end="")
-        if (day + start_day) % 7 == 6:
-            stdio.write()
+        stdio.writef('%2d ', day)
+        if (day + start_day) % 7 == 0:
+            stdio.write('\n')
+    if (day + start_day) % 7 != 0:
+        stdio.write('\n')
 
-if __name__ == "__main__":
-    # input
-    m = int(input("Enter the month (1-12): "))
-    y = int(input("Enter the year (e.g., 2023): "))
-    
-    # prints the calendar
-    print_calendar(m, y)
+
