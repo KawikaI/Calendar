@@ -1,5 +1,6 @@
 # gets the start date of the month using Zeller's Congruence
 def get_start_day(month, year):
+# Adjusting for January and February.
     if month < 3:
         month += 12
         year -= 1
@@ -8,8 +9,10 @@ def get_start_day(month, year):
     m = month
     K = year % 100
     J = year // 100
+    # Zeller's Formula
     f = q + ((13 * (m + 1)) // 5) + K + (K // 4) + (J // 4) + 5 * J
-    h = f % 7
+    # h gives value from 0 to 6, 0 represents Saturday, 1 represents Sunday, and so forth
+    h = f % 76
     
     # Convert result to make Monday = 0, Tuesday = 1, ... Sunday = 6
     return (h - 2) % 7
