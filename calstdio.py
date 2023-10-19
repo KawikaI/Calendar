@@ -38,22 +38,19 @@ def print_calendar(month, year):
     month_days = get_month_days(month, year)
     start_day = get_start_day(month, year)
 
-    stdio.write(" ".join(days))
+    stdio.write(" ".join(days) + '\n')
     for i in range(start_day):
-        stdio.write("   ", end="")
+        stdio.write('   ')
 
     for day in range(1, month_days + 1):
-        stdio.write(f"{day:2} ", end="")
+        stdio.writef('%2d ', day)
         if (day + start_day) % 7 == 0:
-            stdio.write()
+            stdio.write('\n')
     if (day + start_day) % 7 != 0:
-        stdio.write()
+        stdio.write('\n')
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        stdio.write("Usage: python calendar.py [month] [year]")
-        sys.exit(1)
-    
+
     m = int(sys.argv[1])
     y = int(sys.argv[2])
     print_calendar(m, y)
